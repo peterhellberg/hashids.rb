@@ -184,6 +184,15 @@ hashids.encrypt 5 #=> a5
 
 ## Changelog
 
+**0.0.3 (unreleased)** 
+
+ - Default salt
+
+**0.0.2**
+
+ - Minitest required if RUBY_VERSION < 1.9.3
+ - Using scan over split where appropriate
+
 **0.0.1**
   
 - First commit (Heavily based on the [CoffeeScript version](https://github.com/ivanakimov/hashids.coffee))
