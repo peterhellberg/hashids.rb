@@ -249,7 +249,7 @@ class Hashids
   def unhash(hash, alphabet)
     number = 0
 
-    hash.split('').each_with_index do |char, i|
+    hash.scan(@chars_regex).each_with_index do |char, i|
       if pos = alphabet.index(char)
         number += pos * alphabet.length ** (hash.length - i - 1)
       end
