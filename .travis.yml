@@ -1,4 +1,5 @@
 language: ruby
+bundler_args: --without documentation
 rvm:
   - 1.9.2
   - 1.9.3
