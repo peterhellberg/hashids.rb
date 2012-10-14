@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 class Hashids
-  VERSION          = "0.0.2"
+  VERSION          = "0.0.3"
   DEFAULT_ALPHABET = "xcS4F6h89aUbideAI7tkynuopqrXCgTE5GBKHLMjfRsz"
   PRIMES           = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43]
 
