@@ -19,10 +19,8 @@ class Hashids
   end
 
   def encrypt(*numbers)
-    return "" unless numbers.any?
-
-    numbers.each do |number|
-      return "" if !number.kind_of?(Fixnum) || number < 0
+    if numbers.empty? || numbers.reject { |n| n.kind_of?(Fixnum) && n > 0 }.any?
+      return ""
     end
 
     encode(numbers, @alphabet, @salt, @min_length)
@@ -63,7 +61,7 @@ class Hashids
 
       break if char.nil?
 
-      @seps.push char
+      @seps << char
       @alphabet.gsub!(char, ' ')
     end
 
@@ -71,7 +69,7 @@ class Hashids
       separator = @seps[index]
 
       unless separator.nil?
-        @guards.push(separator)
+        @guards << separator
         @seps.delete_at(index)
       end
     end
@@ -89,7 +87,7 @@ class Hashids
     numbers.each_with_index do |number, i|
       if i == 0
         lottery_salt = numbers.join('-')
-        numbers.each { |n| lottery_salt += "-" + ((n.to_i + 1) * 2).to_s }
+        numbers.each { |n| lottery_salt += "-#{(n + 1) * 2}" }
 
         lottery = consistent_shuffle(alphabet, lottery_salt)
 
@@ -173,7 +171,7 @@ class Hashids
 
           if alphabet.length > 0 && lottery_char.length > 0
             alphabet = consistent_shuffle(alphabet, (lottery_char.ord & 12345).to_s + "" + @salt)
-            ret.push unhash(sub_hash, alphabet)
+            ret << unhash(sub_hash, alphabet)
           end
         end
       end
@@ -187,24 +185,21 @@ class Hashids
   def consistent_shuffle(alphabet, salt)
     ret = ""
 
-    alphabet = alphabet.join "" if alphabet.respond_to? :join
-    salt = salt.join "" if salt.respond_to? :join
+    alphabet = alphabet.join("") if alphabet.respond_to? :join
+    salt = salt.join("") if salt.respond_to? :join
 
     alphabet_array = alphabet.split('')
-    salt_array = salt.split('')
-    sorting_array = []
+    salt_array     = salt.split('')
+    sorting_array  = []
 
-    salt_array.push "" unless salt_array.any?
-
-    salt_array.each do |salt_char|
-      sorting_array.push salt_char.ord || 0
-    end
+    salt_array << "" if salt_array.empty?
+    salt_array.each { |char| sorting_array << char.ord }
 
     sorting_array.each_with_index do |int,i|
       add = true
       k   = i
 
-      while k != (sorting_array.length + i - 1)
+      while k != sorting_array.length + i - 1
         next_index = (k + 1) % sorting_array.length
 
         if add
@@ -223,9 +218,8 @@ class Hashids
     i = 0
 
     while alphabet_array.length > 0
-      alphabet_size = alphabet_array.length
       pos = sorting_array[i]
-      pos %= alphabet_size if pos >= alphabet_size
+      pos %= alphabet_array.length if pos >= alphabet_array.length
       ret += alphabet_array[pos]
 
       alphabet_array.delete_at(pos)
@@ -237,11 +231,10 @@ class Hashids
 
   def hash(number, alphabet)
     hash = ""
-    alphabet_length = alphabet.length
 
     while number > 0
-      hash   = alphabet[number % alphabet_length] + hash
-      number = number / alphabet_length
+      hash   = alphabet[number % alphabet.length] + hash
+      number = number / alphabet.length
     end
 
     hash
@@ -250,13 +243,11 @@ class Hashids
   def unhash(hash, alphabet)
     number = 0
 
-    hash.split('').each_with_index { |char, i|
-      pos = alphabet.index char
-
-      return if pos.nil?
-
-      number += pos * alphabet.length ** (hash.length - i - 1)
-    }
+    hash.split('').each_with_index do |char, i|
+      if pos = alphabet.index(char)
+        number += pos * alphabet.length ** (hash.length - i - 1)
+      end
+    end
 
     number
   end
