@@ -5,9 +5,9 @@ class Hashids
   DEFAULT_ALPHABET = "xcS4F6h89aUbideAI7tkynuopqrXCgTE5GBKHLMjfRsz"
   PRIMES           = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43]
 
-  class SaltError      < ArgumentError; end
-  class MinLengthError < ArgumentError; end
-  class AlphabetError  < ArgumentError; end
+  SaltError        = Class.new(ArgumentError)
+  MinLengthError   = Class.new(ArgumentError)
+  AlphabetError    = Class.new(ArgumentError)
 
   def initialize(salt = "", min_length = 0, alphabet = DEFAULT_ALPHABET)
     @salt        = salt
