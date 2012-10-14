@@ -12,6 +12,8 @@ Use hashids when you do not want to expose your database ids to the user.
 
 hashids (Hash ID's) creates short, unique, decryptable hashes from unsigned integers.
 
+_(NOTE: This is **NOT** a true cryptographic hash, since it is reversible)_
+
 It was designed for websites to use in URL shortening, tracking stuff, or 
 making pages private (or at least unguessable).
 
