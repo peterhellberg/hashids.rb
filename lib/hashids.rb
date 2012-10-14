@@ -10,20 +10,22 @@ class Hashids
   class AlphabetError  < ArgumentError; end
 
   def initialize(salt = "", min_length = 0, alphabet = DEFAULT_ALPHABET)
-    @salt       = salt
-    @min_length = min_length
-    @alphabet   = alphabet
+    @salt        = salt
+    @min_length  = min_length
+    @alphabet    = alphabet
+
+    @chars_regex = /./
 
     validate_attributes
     setup_alphabet
   end
 
   def encrypt(*numbers)
-    if numbers.empty? || numbers.reject { |n| n.kind_of?(Fixnum) && n > 0 }.any?
-      return ""
+    if numbers.empty? || numbers.reject { |n| Integer(n) && n > 0 }.any?
+      ""
+    else
+      encode(numbers, @alphabet, @salt, @min_length)
     end
-
-    encode(numbers, @alphabet, @salt, @min_length)
   end
 
   def decrypt(hash)
@@ -50,7 +52,7 @@ class Hashids
     @seps   = []
     @guards = []
 
-    @alphabet = @alphabet.split('').uniq.join
+    @alphabet = @alphabet.scan(@chars_regex).uniq.join('')
 
     if @alphabet.length < 4
       raise AlphabetError, "Alphabet must contain at least 4 unique characters."
@@ -81,7 +83,7 @@ class Hashids
   def encode(numbers, alphabet, salt, min_length = 0)
     ret = ""
 
-    seps = consistent_shuffle(@seps, numbers).split("")
+    seps = consistent_shuffle(@seps, numbers).scan(@chars_regex)
     lottery_char = ""
 
     numbers.each_with_index do |number, i|
@@ -170,7 +172,7 @@ class Hashids
           end
 
           if alphabet.length > 0 && lottery_char.length > 0
-            alphabet = consistent_shuffle(alphabet, (lottery_char.ord & 12345).to_s + "" + @salt)
+            alphabet = consistent_shuffle(alphabet, (lottery_char.ord & 12345).to_s + @salt)
             ret << unhash(sub_hash, alphabet)
           end
         end
@@ -188,8 +190,8 @@ class Hashids
     alphabet = alphabet.join("") if alphabet.respond_to? :join
     salt = salt.join("") if salt.respond_to? :join
 
-    alphabet_array = alphabet.split('')
-    salt_array     = salt.split('')
+    alphabet_array = alphabet.scan(@chars_regex)
+    salt_array     = salt.scan(@chars_regex)
     sorting_array  = []
 
     salt_array << "" if salt_array.empty?
@@ -251,5 +253,4 @@ class Hashids
 
     number
   end
-
 end
