@@ -68,7 +68,7 @@ class Hashids
       break if char.nil?
 
       @seps << char
-      @alphabet.gsub!(char, ' ')
+      @alphabet.tr!(char, ' ')
     end
 
     [0, 4, 8, 12].each do |index|
@@ -80,7 +80,7 @@ class Hashids
       end
     end
 
-    @alphabet.gsub!(' ', '')
+    @alphabet.delete!(' ')
     @alphabet = consistent_shuffle(@alphabet, @salt)
   end
 
@@ -99,7 +99,7 @@ class Hashids
 
         ret += lottery_char = lottery[0]
 
-        alphabet = lottery_char + alphabet.gsub(lottery_char, '')
+        alphabet = "#{lottery_char}#{alphabet.delete(lottery_char)}"
       end
 
       alphabet = consistent_shuffle(alphabet, "#{lottery_char.ord & 12345}#{salt}")
@@ -124,7 +124,7 @@ class Hashids
 
       if ret.length < min_length
         guard_index = (guard_index + ret.length) % @guards.length
-        guard = @guards[guard_index]
+        guard       = @guards[guard_index]
 
         ret += guard
       end
@@ -132,10 +132,10 @@ class Hashids
 
     while ret.length < min_length
       pad_array = [alphabet[1].ord, alphabet[0].ord]
-      pad_left = encode(pad_array, alphabet, salt)
+      pad_left  = encode(pad_array, alphabet, salt)
       pad_right = encode(pad_array, alphabet, pad_array.join(''))
 
-      ret = pad_left + ret + pad_right
+      ret = "#{pad_left}#{ret}#{pad_right}"
       excess = ret.length - min_length
 
       ret = ret[(excess/2), min_length] if excess > 0
@@ -154,7 +154,7 @@ class Hashids
       lottery_char = ""
 
       @guards.each do |guard|
-        hash = hash.gsub(guard, ' ')
+        hash = hash.tr(guard, ' ')
       end
 
       hash_split = hash.split(' ')
@@ -162,7 +162,7 @@ class Hashids
       hash = hash_split[[3,2].include?(hash_split.length) ? 1 : 0]
 
       @seps.each do |sep|
-        hash = hash.gsub(sep, ' ')
+        hash = hash.tr(sep, ' ')
       end
 
       hash_array = hash.split(' ')
@@ -171,8 +171,8 @@ class Hashids
         if sub_hash.length > 0
           if i == 0
             lottery_char = hash[0]
-            sub_hash = sub_hash[1..-1]
-            alphabet = lottery_char + @alphabet.gsub(lottery_char, "")
+            sub_hash     = sub_hash[1..-1]
+            alphabet     = lottery_char + @alphabet.delete(lottery_char)
           end
 
           if alphabet.length > 0 && lottery_char.length > 0
@@ -239,7 +239,7 @@ class Hashids
     hash = ""
 
     while number > 0
-      hash   = alphabet[number % alphabet.length] + hash
+      hash   = "#{alphabet[number % alphabet.length]}#{hash}"
       number = number / alphabet.length
     end
 
