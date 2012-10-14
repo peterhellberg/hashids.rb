@@ -89,15 +89,15 @@ describe Hashids do
       h.encrypt(1,2,3,4,5).must_equal 'adcdacddcdaacdad'
     end
 
-    it "doesn’t produce repeating patterns for identical numbers" do
+    it "does not produce repeating patterns for identical numbers" do
       hashids.encrypt(5,5,5,5).must_equal 'GLh5SMs9'
     end
 
-    it "doesn’t produce repeating patterns for incremented numbers" do
+    it "does not produce repeating patterns for incremented numbers" do
       hashids.encrypt(*(1..10).to_a).must_equal 'zEUzfySGIpuyhpF6HaC7'
     end
 
-    it "doesn’t produce similarities between incrementing number hashes" do
+    it "does not produce similarities between incrementing number hashes" do
       hashids.encrypt(1).must_equal 'LX'
       hashids.encrypt(2).must_equal 'ed'
       hashids.encrypt(3).must_equal 'o9'
@@ -126,7 +126,7 @@ describe Hashids do
       }
     end
 
-    it "doesn’t decrypt with a different salt" do
+    it "does not decrypt with a different salt" do
       peppers = Hashids.new('this is my pepper')
       hashids.decrypt('ryBo').must_equal [12345]
       peppers.decrypt('ryBo').must_equal []
