@@ -43,6 +43,10 @@ class Hashids
       raise Hashids::MinLengthError, "The min length must be a Fixnum"
     end
 
+    unless @min_length >= 0
+      raise Hashids::MinLengthError, "The min length must be 0 or more"
+    end
+
     unless @alphabet.kind_of?(String)
       raise Hashids::AlphabetError, "The alphabet must be a String"
     end
@@ -195,7 +199,7 @@ class Hashids
     sorting_array  = []
 
     salt_array << "" if salt_array.empty?
-    salt_array.each { |char| sorting_array << char.ord }
+    salt_array.each { |char| sorting_array << (char.empty?? 0 : char.ord) }
 
     sorting_array.each_with_index do |int,i|
       add = true

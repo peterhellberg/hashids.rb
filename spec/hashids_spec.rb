@@ -22,6 +22,10 @@ describe Hashids do
   }
 
   describe "setup" do
+    it "has a default salt" do
+      Hashids.new.encrypt(1,2,3).must_equal "katKSA"
+    end
+
     it "has a default alphabet" do
       Hashids::DEFAULT_ALPHABET.must_equal default_alphabet
     end
