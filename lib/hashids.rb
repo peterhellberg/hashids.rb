@@ -150,20 +150,13 @@ class Hashids
 
     if hash.length > 0
       original_hash = hash
-      alphabet = ""
-      lottery_char = ""
+      alphabet      = ""
+      lottery_char  = ""
 
-      @guards.each do |guard|
-        hash = hash.tr(guard, ' ')
-      end
-
-      hash_split = hash.split(' ')
-
+      hash_split = hash.tr(@guards.join(''), ' ').split(' ')
       hash = hash_split[[3,2].include?(hash_split.length) ? 1 : 0]
 
-      @seps.each do |sep|
-        hash = hash.tr(sep, ' ')
-      end
+      hash.tr!(@seps.join(''), ' ')
 
       hash_array = hash.split(' ')
 
@@ -198,8 +191,8 @@ class Hashids
     salt_array     = salt.scan(@chars_regex)
     sorting_array  = []
 
-    salt_array << "" if salt_array.empty?
-    salt_array.each { |char| sorting_array << (char.empty?? 0 : char.ord) }
+    salt_array << 0 if salt_array.empty?
+    salt_array.each { |char| sorting_array << char.ord }
 
     sorting_array.each_with_index do |int,i|
       add = true
