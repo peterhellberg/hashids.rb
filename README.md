@@ -184,9 +184,10 @@ hashids.encrypt 5 #=> a5
 
 ## Changelog
 
-**0.0.3 (unreleased)** 
+**0.0.3**
 
- - Default salt
+ - Default salt (Allows for `Hashids.new.encrypt(91) #=> "kBy"`)
+ - Further tweaking of the private methods (`tr/delete` over `gsub`, `scan` over `split`)
 
 **0.0.2**
 
