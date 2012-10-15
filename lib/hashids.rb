@@ -21,6 +21,8 @@ class Hashids
   end
 
   def encrypt(*numbers)
+    numbers.flatten! if numbers.length == 1
+
     if numbers.empty? || numbers.reject { |n| Integer(n) && n > 0 }.any?
       ""
     else

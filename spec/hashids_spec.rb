@@ -74,6 +74,10 @@ describe Hashids do
       }
     end
 
+    it "can encrypt a list of numbers passed in as an array" do
+      hashids.encrypt([1,2,3]).must_equal 'eGtrS8'
+    end
+
     it "returns an empty string if no numbers" do
       hashids.encrypt.must_equal ""
     end
