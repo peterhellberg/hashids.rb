@@ -45,7 +45,7 @@ Or install it yourself as:
 
 ## Usage
 
-#### Encrypting one number
+### Encrypting one number
 
 You can pass a unique salt value so your hashes differ from everyone else's. I use "**this is my salt**" as an example.
 
@@ -58,7 +58,7 @@ hash = hashids.encrypt(12345)
 
     ryBo
 
-#### Decrypting
+### Decrypting
 
 Notice during decryption, same salt value is used:
 
@@ -71,7 +71,7 @@ numbers = hashids.decrypt("ryBo")
 
     [ 12345 ]
 
-#### Decrypting with different salt
+### Decrypting with different salt
 
 Decryption will not work if salt is changed:
 
@@ -84,7 +84,7 @@ numbers = hashids.decrypt("ryBo")
 
     []
 
-#### Encrypting several numbers
+### Encrypting several numbers
 
 ```ruby
 hashids = Hashids.new("this is my salt")
@@ -95,7 +95,7 @@ hash = hashids.encrypt(683, 94108, 123, 5)
 
     zBphL54nuMyu5
   
-#### Decrypting is done the same way
+### Decrypting is done the same way
 
 ```ruby
 hashids = Hashids.new("this is my salt")
@@ -106,7 +106,7 @@ numbers = hashids.decrypt("zBphL54nuMyu5")
 
     [ 683, 94108, 123, 5 ]
 
-#### Encrypting and specifying minimum hash length
+### Encrypting and specifying minimum hash length
 
 Here we encrypt integer 1, and set the minimum hash length to **8** (by default it's **0** -- meaning hashes will be the shortest possible length).
 
@@ -119,7 +119,7 @@ hash = hashids.encrypt(1)
 
     b9iLXiAa
 
-#### Decrypting
+### Decrypting
 
 ```ruby
 hashids = Hashids.new("this is my salt", 8)
@@ -130,7 +130,7 @@ numbers = hashids.decrypt("b9iLXiAa")
 
     [ 1 ]
 
-#### Specifying custom hash alphabet
+### Specifying custom hash alphabet
 
 Here we set the alphabet to consist of only four letters: "abcd"
 
@@ -148,7 +148,7 @@ hash = hashids.encrypt(1, 2, 3, 4, 5)
 The primary purpose of hashids is to obfuscate ids. It's not meant or tested to be used for security purposes or compression.
 Having said that, this algorithm does try to make these hashes unguessable and unpredictable:
 
-#### Repeating numbers
+### Repeating numbers
 
 ```ruby
 hashids = Hashids.new("this is my salt")
