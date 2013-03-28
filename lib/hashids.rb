@@ -140,7 +140,7 @@ class Hashids
       ret = "#{pad_left}#{ret}#{pad_right}"
       excess = ret.length - min_length
 
-      ret = ret[(excess/2), min_length] if excess > 0
+      ret = ret[(excess.div(2)), min_length] if excess > 0
       alphabet = consistent_shuffle(alphabet, salt + ret)
     end
 
@@ -235,7 +235,7 @@ class Hashids
 
     while number > 0
       hash   = "#{alphabet[number % alphabet.length]}#{hash}"
-      number = number / alphabet.length
+      number = number.div(alphabet.length)
     end
 
     hash
