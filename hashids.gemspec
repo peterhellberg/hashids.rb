@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.description   = %q{Use hashids when you do not want to expose your database ids to the user.}
   gem.homepage      = "https://github.com/peterhellberg/hashids.rb"
 
-  gem.required_ruby_version = '>= 1.9.2'
+  gem.required_ruby_version = '>= 1.9.3'
 
   gem.files         = `git ls-files`.split($/)
   gem.test_files    = gem.files.grep(%r{^(spec)/})
