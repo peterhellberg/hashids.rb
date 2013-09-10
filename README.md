@@ -56,7 +56,7 @@ hash = hashids.encrypt(12345)
 
 `hash` is now going to be:
 
-    ryBo
+    NkK9
 
 ### Decrypting
 
@@ -77,7 +77,7 @@ Decryption will not work if salt is changed:
 
 ```ruby
 hashids = Hashids.new("this is my pepper")
-numbers = hashids.decrypt("ryBo")
+numbers = hashids.decrypt("NkK9")
 ```
 
 `numbers` is now going to be:
@@ -93,13 +93,13 @@ hash = hashids.encrypt(683, 94108, 123, 5)
 
 `hash` is now going to be:
 
-    zBphL54nuMyu5
+    aBMswoO2UB3Sj
   
 ### Decrypting is done the same way
 
 ```ruby
 hashids = Hashids.new("this is my salt")
-numbers = hashids.decrypt("zBphL54nuMyu5")
+numbers = hashids.decrypt("aBMswoO2UB3Sj")
 ```
 
 `numbers` is now going to be:
@@ -117,13 +117,13 @@ hash = hashids.encrypt(1)
 
 `hash` is now going to be:
 
-    b9iLXiAa
+    gB0NV05e
 
-### Decrypting
+### Decrypting with minimum hash length
 
 ```ruby
 hashids = Hashids.new("this is my salt", 8)
-numbers = hashids.decrypt("b9iLXiAa")
+numbers = hashids.decrypt("gB0NV05e")
 ```
 
 `numbers` is now going to be:
@@ -132,16 +132,16 @@ numbers = hashids.decrypt("b9iLXiAa")
 
 ### Specifying custom hash alphabet
 
-Here we set the alphabet to consist of only four letters: "abcd"
+Here we set the alphabet to consist of: "abcdefghijkABCDEFGHIJK12345"
 
 ```ruby
-hashids = Hashids.new("this is my salt", 0, "abcd")
+hashids = Hashids.new("this is my salt", 0, "abcdefghijkABCDEFGHIJK12345")
 hash = hashids.encrypt(1, 2, 3, 4, 5)
 ```
 
 `hash` is now going to be:
 
-    adcdacddcdaacdad
+    dEc4iEHeF3
 
 ## Randomness
 
@@ -157,7 +157,7 @@ hash = hashids.encrypt(5, 5, 5, 5)
 
 You don't see any repeating patterns that might show there's 4 identical numbers in the hash:
 
-    GLh5SMs9
+    1Wc8cwcE
 
 Same with incremented numbers:
 
@@ -166,23 +166,50 @@ hashids = Hashids.new("this is my salt")
 hash = hashids.encrypt(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 ```
 
-`hash` will be :
+`hash` is now going to be:
 
-    zEUzfySGIpuyhpF6HaC7
+    kRHnurhptKcjIDTWC3sx
 
 ### Incrementing number hashes:
 
 ```ruby
 hashids = Hashids.new("this is my salt")
 
-hashids.encrypt 1 #=> LX
-hashids.encrypt 2 #=> ed
-hashids.encrypt 3 #=> o9
-hashids.encrypt 4 #=> 4n
-hashids.encrypt 5 #=> a5
+hashids.encrypt 1 #=> NV
+hashids.encrypt 2 #=> 6m
+hashids.encrypt 3 #=> yD
+hashids.encrypt 4 #=> 2l
+hashids.encrypt 5 #=> rD
 ```
 
+### Encrypting using a HEX string
+
+```ruby
+hashids = Hashids.new("this is my salt")
+hash = hashids.encrypt_hex('DEADBEEF')
+```
+
+`hash` is now going to be:
+
+    kRNrpKlJ
+
+### Decrypting to a HEX string
+
+```ruby
+hashids = Hashids.new("this is my salt")
+hex_str = hashids.decrypt_hex("kRNrpKlJ")
+```
+
+`hex_str` is now going to be:
+
+    DEADBEEF
+
 ## Changelog
+
+**0.3.0**
+
+ - Bumped the version number since hashids.rb now support the new algorithm
+ - Support for `encrypt_hex` and `decrypt_hex`
 
 **0.0.3**
 
