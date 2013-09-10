@@ -24,7 +24,7 @@ This algorithm tries to satisfy the following requirements:
 3. You should be able to specify minimum hash length.
 4. Hashes should not contain basic English curse words (since they are meant to appear in public places - like the URL).
 
-Instead of showing items as `1`, `2`, or `3`, you could show them as `U6dc`, `u87U`, and `HMou`.
+Instead of showing items as `1`, `2`, or `3`, you could show them as `jR`, `k5`, and `l5`.
 You don't have to store these hashes in the database, but can encrypt + decrypt on the fly.
 
 All integers need to be greater than or equal to zero.
@@ -47,7 +47,8 @@ Or install it yourself as:
 
 ### Encrypting one number
 
-You can pass a unique salt value so your hashes differ from everyone else's. I use "**this is my salt**" as an example.
+You can pass a unique salt value so your hashes differ from everyone else's. 
+I use **this is my salt** as an example.
 
 ```ruby
 hashids = Hashids.new("this is my salt")
@@ -108,7 +109,8 @@ numbers = hashids.decrypt("aBMswoO2UB3Sj")
 
 ### Encrypting and specifying minimum hash length
 
-Here we encrypt integer 1, and set the minimum hash length to **8** (by default it's **0** -- meaning hashes will be the shortest possible length).
+Here we encrypt integer 1, and set the minimum hash length to **8**
+(by default it's **0** -- meaning hashes will be the shortest possible length).
 
 ```ruby
 hashids = Hashids.new("this is my salt", 8)
