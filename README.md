@@ -65,7 +65,7 @@ Notice during decryption, same salt value is used:
 
 ```ruby
 hashids = Hashids.new("this is my salt")
-numbers = hashids.decrypt("ryBo")
+numbers = hashids.decrypt("NkK9")
 ```
 
 `numbers` is now going to be:
