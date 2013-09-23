@@ -1,11 +1,13 @@
 # encoding: utf-8
 
 class Hashids
-  VERSION  = "0.3.0"
+  VERSION = "0.3.0"
 
   MIN_ALPHABET_LENGTH = 16
   SEP_DIV             = 3.5
   GUARD_DIV           = 12.0
+
+  DEFAULT_SEPS        = "cfhistuCFHISTU"
 
   DEFAULT_ALPHABET    = "abcdefghijklmnopqrstuvwxyz" +
                         "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
@@ -32,7 +34,7 @@ class Hashids
   end
 
   def encrypt_hex(str)
-    return "" unless str.to_s.match(/\A[0-9a-fA-F]+\Z/)
+    return "" unless hex_string?(str)
 
     numbers = str.scan(/[\w\W]{1,12}/).map do |num|
       "1#{num}".to_i(16)
@@ -48,7 +50,6 @@ class Hashids
   end
 
   def decrypt_hex(hash)
-
     ret = ""
     numbers = decrypt(hash)
 
@@ -190,7 +191,7 @@ class Hashids
   def setup_alphabet
     validate_attributes
 
-    @alphabet = alphabet.split('').uniq.join('')
+    @alphabet = uniq_characters(alphabet)
 
     setup_seps
     setup_guards
@@ -199,18 +200,15 @@ class Hashids
   end
 
   def setup_seps
-    @seps = "cfhistuCFHISTU"
-
-    # seps should contain only characters present in alphabet
-    # alphabet should not contains seps
+    @seps = DEFAULT_SEPS
 
     seps.length.times do |i|
-      j = @alphabet.index(seps[i])
-
-      if j.nil?
-        @seps = seps[0, i] + " " + seps[i + 1 .. -1]
+      # Seps should only contain characters present in alphabet,
+      # and alphabet should not contains seps
+      if j = alphabet.index(seps[i])
+        @alphabet = pick_characters(alphabet, j)
       else
-        @alphabet = alphabet[0, j] + " " + alphabet[j + 1 .. -1]
+        @seps = pick_characters(seps, i)
       end
     end
 
@@ -279,5 +277,17 @@ class Hashids
       raise AlphabetError, "Alphabet must contain at least " +
                            "#{MIN_ALPHABET_LENGTH} unique characters."
     end
+  end
+
+  def hex_string?(string)
+    string.to_s.match(/\A[0-9a-fA-F]+\Z/)
+  end
+
+  def pick_characters(array, index)
+    array[0, index] + " " + array[index + 1 .. -1]
+  end
+
+  def uniq_characters(string)
+    string.split('').uniq.join('')
   end
 end
