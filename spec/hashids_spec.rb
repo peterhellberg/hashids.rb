@@ -12,6 +12,10 @@ describe Hashids do
   let(:guards)            { 'AdG0'            }
   let(:hashids)           { Hashids.new(salt) }
 
+  let(:default_seps) {
+    "cfhistuCFHISTU"
+  }
+
   let(:default_alphabet)  {
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890"
   }
@@ -23,6 +27,10 @@ describe Hashids do
   describe "setup" do
     it "has a default alphabet" do
       Hashids::DEFAULT_ALPHABET.must_equal default_alphabet
+    end
+
+    it "has default separators" do
+      Hashids::DEFAULT_SEPS.must_equal default_seps
     end
 
     it "has a default salt" do
