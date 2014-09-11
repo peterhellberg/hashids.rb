@@ -1,9 +1,9 @@
 # Hashids
 
-A small Ruby gem to generate YouTube-like hashes from one or many numbers.
+A small Ruby gem to generate YouTube-like ids from one or many numbers.
 Use hashids when you do not want to expose your database ids to the user.
 
-[http://www.hashids.org/ruby/](http://www.hashids.org/ruby/)
+[http://hashids.org/ruby/](http://hashids.org/ruby/)
 
 [![Build Status](https://secure.travis-ci.org/peterhellberg/hashids.rb.png)](http://travis-ci.org/peterhellberg/hashids.rb)
 (2.1.2, 2.0.0, 1.9.3, jruby-19mode, rbx-19mode)
@@ -172,7 +172,7 @@ hash = hashids.encode(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 
     kRHnurhptKcjIDTWC3sx
 
-### Incrementing number hashes:
+### Incrementing number ids:
 
 ```ruby
 hashids = Hashids.new("this is my salt")
