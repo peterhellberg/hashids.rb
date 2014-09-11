@@ -23,35 +23,35 @@ class Hashids
     setup_alphabet
   end
 
-  def encrypt(*numbers)
+  def encode(*numbers)
     numbers.flatten! if numbers.length == 1
 
     if numbers.empty? || numbers.reject { |n| Integer(n) && n >= 0 }.any?
       ""
     else
-      encode(numbers)
+      internal_encode(numbers)
     end
   end
 
-  def encrypt_hex(str)
+  def encode_hex(str)
     return "" unless hex_string?(str)
 
     numbers = str.scan(/[\w\W]{1,12}/).map do |num|
       "1#{num}".to_i(16)
     end
 
-    encrypt(numbers)
+    encode(numbers)
   end
 
-  def decrypt(hash)
+  def decode(hash)
     return [] if hash.nil? || hash.empty?
 
-    decode(hash, @alphabet)
+    internal_decode(hash, @alphabet)
   end
 
-  def decrypt_hex(hash)
+  def decode_hex(hash)
     ret = ""
-    numbers = decrypt(hash)
+    numbers = decode(hash)
 
     numbers.length.times do |i|
       ret += numbers[i].to_s(16)[1 .. -1]
@@ -62,7 +62,7 @@ class Hashids
 
   protected
 
-  def encode(numbers)
+  def internal_encode(numbers)
     ret = ""
 
     alphabet = @alphabet
@@ -111,7 +111,7 @@ class Hashids
     ret
   end
 
-  def decode(hash, alphabet)
+  def internal_decode(hash, alphabet)
     ret = []
 
     breakdown = hash.gsub(/[#{@guards}]/, " ")

@@ -34,7 +34,7 @@ describe Hashids do
     end
 
     it "has a default salt" do
-      Hashids.new.encrypt(1,2,3).must_equal "o2fXhV"
+      Hashids.new.encode(1,2,3).must_equal "o2fXhV"
     end
 
     it "has the correct salt" do
@@ -70,152 +70,152 @@ describe Hashids do
     end
   end
 
-  describe "encrypt" do
-    it "encrypts a single number" do
-      hashids.encrypt(12345).must_equal 'NkK9'
+  describe "encode" do
+    it "encodes a single number" do
+      hashids.encode(12345).must_equal 'NkK9'
 
       hashids.tap do |h|
-        h.encrypt(-1).must_equal          ''
-        h.encrypt(1).must_equal           'NV'
-        h.encrypt(22).must_equal          'K4'
-        h.encrypt(333).must_equal         'OqM'
-        h.encrypt(9999).must_equal        'kQVg'
-        h.encrypt(123_000).must_equal     '58LzD'
-        h.encrypt(456_000_000).must_equal '5gn6mQP'
-        h.encrypt(987_654_321).must_equal 'oyjYvry'
+        h.encode(-1).must_equal          ''
+        h.encode(1).must_equal           'NV'
+        h.encode(22).must_equal          'K4'
+        h.encode(333).must_equal         'OqM'
+        h.encode(9999).must_equal        'kQVg'
+        h.encode(123_000).must_equal     '58LzD'
+        h.encode(456_000_000).must_equal '5gn6mQP'
+        h.encode(987_654_321).must_equal 'oyjYvry'
       end
     end
 
-    it "can encrypt a list of numbers" do
+    it "can encode a list of numbers" do
       hashids.tap do |h|
-        h.encrypt(1,2,3).must_equal "laHquq"
-        h.encrypt(2,4,6).must_equal "44uotN"
-        h.encrypt(99,25).must_equal "97Jun"
+        h.encode(1,2,3).must_equal "laHquq"
+        h.encode(2,4,6).must_equal "44uotN"
+        h.encode(99,25).must_equal "97Jun"
 
-        h.encrypt(1337,42,314).
+        h.encode(1337,42,314).
           must_equal "7xKhrUxm"
 
-        h.encrypt(683, 94108, 123, 5).
+        h.encode(683, 94108, 123, 5).
           must_equal "aBMswoO2UB3Sj"
 
-        h.encrypt(547, 31, 241271, 311, 31397, 1129, 71129).
+        h.encode(547, 31, 241271, 311, 31397, 1129, 71129).
           must_equal "3RoSDhelEyhxRsyWpCx5t1ZK"
 
-        h.encrypt(21979508, 35563591, 57543099, 93106690, 150649789).
+        h.encode(21979508, 35563591, 57543099, 93106690, 150649789).
           must_equal "p2xkL3CK33JjcrrZ8vsw4YRZueZX9k"
       end
     end
 
-    it "can encrypt a list of numbers passed in as an array" do
-      hashids.encrypt([1,2,3]).must_equal "laHquq"
+    it "can encode a list of numbers passed in as an array" do
+      hashids.encode([1,2,3]).must_equal "laHquq"
     end
 
     it "returns an empty string if no numbers" do
-      hashids.encrypt.must_equal ""
+      hashids.encode.must_equal ""
     end
 
     it "returns an empty string if any of the numbers are negative" do
-      hashids.encrypt(-1).must_equal ""
-      hashids.encrypt(10,-10).must_equal ""
+      hashids.encode(-1).must_equal ""
+      hashids.encode(10,-10).must_equal ""
     end
 
-    it "can encrypt to a minumum length" do
+    it "can encode to a minumum length" do
       h = Hashids.new(salt, 18)
-      h.encrypt(1).must_equal "aJEDngB0NV05ev1WwP"
+      h.encode(1).must_equal "aJEDngB0NV05ev1WwP"
 
-      h.encrypt(4140, 21147, 115975, 678570, 4213597, 27644437).
+      h.encode(4140, 21147, 115975, 678570, 4213597, 27644437).
         must_equal "pLMlCWnJSXr1BSpKgqUwbJ7oimr7l6"
     end
 
-    it "can encrypt with a custom alphabet" do
+    it "can encode with a custom alphabet" do
       h = Hashids.new(salt, 0, "ABCDEFGhijklmn34567890-:")
-      h.encrypt(1,2,3,4,5).must_equal "6nhmFDikA0"
+      h.encode(1,2,3,4,5).must_equal "6nhmFDikA0"
     end
 
     it "does not produce repeating patterns for identical numbers" do
-      hashids.encrypt(5,5,5,5).must_equal "1Wc8cwcE"
+      hashids.encode(5,5,5,5).must_equal "1Wc8cwcE"
     end
 
     it "does not produce repeating patterns for incremented numbers" do
-      hashids.encrypt(*(1..10).to_a).must_equal "kRHnurhptKcjIDTWC3sx"
+      hashids.encode(*(1..10).to_a).must_equal "kRHnurhptKcjIDTWC3sx"
     end
 
     it "does not produce similarities between incrementing number hashes" do
-      hashids.encrypt(1).must_equal 'NV'
-      hashids.encrypt(2).must_equal '6m'
-      hashids.encrypt(3).must_equal 'yD'
-      hashids.encrypt(4).must_equal '2l'
-      hashids.encrypt(5).must_equal 'rD'
+      hashids.encode(1).must_equal 'NV'
+      hashids.encode(2).must_equal '6m'
+      hashids.encode(3).must_equal 'yD'
+      hashids.encode(4).must_equal '2l'
+      hashids.encode(5).must_equal 'rD'
     end
   end
 
-  describe "encrypt_hex" do
-    it "encrypts hex string" do
+  describe "encode_hex" do
+    it "encodes hex string" do
       hashids.tap { |h|
-        h.encrypt_hex("FA").must_equal    "lzY"
-        h.encrypt_hex("26dd").must_equal  "MemE"
-        h.encrypt_hex("FF1A").must_equal  "eBMrb"
-        h.encrypt_hex("12abC").must_equal "D9NPE"
-        h.encrypt_hex("185b0").must_equal "9OyNW"
-        h.encrypt_hex("17b8d").must_equal "MRWNE"
+        h.encode_hex("FA").must_equal    "lzY"
+        h.encode_hex("26dd").must_equal  "MemE"
+        h.encode_hex("FF1A").must_equal  "eBMrb"
+        h.encode_hex("12abC").must_equal "D9NPE"
+        h.encode_hex("185b0").must_equal "9OyNW"
+        h.encode_hex("17b8d").must_equal "MRWNE"
 
-        h.encrypt_hex("1d7f21dd38").must_equal "4o6Z7KqxE"
-        h.encrypt_hex("20015111d").must_equal "ooweQVNB"
+        h.encode_hex("1d7f21dd38").must_equal "4o6Z7KqxE"
+        h.encode_hex("20015111d").must_equal "ooweQVNB"
       }
     end
 
     it "returns an empty string if passed non-hex string" do
-      hashids.encrypt_hex("XYZ123").must_equal ""
+      hashids.encode_hex("XYZ123").must_equal ""
     end
   end
 
-  describe "decrypt" do
-    it "decrypts an encrypted number" do
-      hashids.decrypt("NkK9").must_equal [12345]
-      hashids.decrypt("5O8yp5P").must_equal [666555444]
-      hashids.decrypt("KVO9yy1oO5j").must_equal [666555444333222]
+  describe "decode" do
+    it "decodes an encoded number" do
+      hashids.decode("NkK9").must_equal [12345]
+      hashids.decode("5O8yp5P").must_equal [666555444]
+      hashids.decode("KVO9yy1oO5j").must_equal [666555444333222]
 
       hashids.tap { |h|
-        h.decrypt("Wzo").must_equal [1337]
-        h.decrypt("DbE").must_equal [808]
-        h.decrypt("yj8").must_equal [303]
+        h.decode("Wzo").must_equal [1337]
+        h.decode("DbE").must_equal [808]
+        h.decode("yj8").must_equal [303]
       }
     end
 
-    it "decrypts a list of encrypted numbers" do
-      hashids.decrypt("1gRYUwKxBgiVuX").must_equal [66655,5444333,2,22]
-      hashids.decrypt('aBMswoO2UB3Sj').must_equal [683, 94108, 123, 5]
+    it "decodes a list of encoded numbers" do
+      hashids.decode("1gRYUwKxBgiVuX").must_equal [66655,5444333,2,22]
+      hashids.decode('aBMswoO2UB3Sj').must_equal [683, 94108, 123, 5]
 
       hashids.tap { |h|
-        h.decrypt('jYhp').must_equal [3, 4]
-        h.decrypt('k9Ib').must_equal [6, 5]
+        h.decode('jYhp').must_equal [3, 4]
+        h.decode('k9Ib').must_equal [6, 5]
 
-        h.decrypt('EMhN').must_equal [31, 41]
-        h.decrypt('glSgV').must_equal [13, 89]
+        h.decode('EMhN').must_equal [31, 41]
+        h.decode('glSgV').must_equal [13, 89]
       }
     end
 
-    it "does not decrypt with a different salt" do
+    it "does not decode with a different salt" do
       peppers = Hashids.new('this is my pepper')
 
-      hashids.decrypt('NkK9').must_equal [12345]
-      peppers.decrypt('NkK9').must_equal []
+      hashids.decode('NkK9').must_equal [12345]
+      peppers.decode('NkK9').must_equal []
     end
 
-    it "can decrypt from a hash with a minimum length" do
+    it "can decode from a hash with a minimum length" do
       h = Hashids.new(salt, 8)
-      h.decrypt("gB0NV05e").must_equal [1]
+      h.decode("gB0NV05e").must_equal [1]
 
-      h.decrypt("mxi8XH87").must_equal [25, 100, 950]
-      h.decrypt("KQcmkIW8hX").must_equal [5,200,195, 1]
+      h.decode("mxi8XH87").must_equal [25, 100, 950]
+      h.decode("KQcmkIW8hX").must_equal [5,200,195, 1]
     end
   end
 
-  describe "decrypt_hex" do
-    it "decrypts hex string" do
-      hashids.decrypt_hex("lzY").must_equal "FA"
-      hashids.decrypt_hex("eBMrb").must_equal "FF1A"
-      hashids.decrypt_hex("D9NPE").must_equal "12ABC"
+  describe "decode_hex" do
+    it "decodes hex string" do
+      hashids.decode_hex("lzY").must_equal "FA"
+      hashids.decode_hex("eBMrb").must_equal "FF1A"
+      hashids.decode_hex("D9NPE").must_equal "12ABC"
     end
   end
 
@@ -255,9 +255,9 @@ describe Hashids do
       end
     end
 
-    describe "decode" do
+    describe "internal_decode" do
       it "decodes" do
-        hashids.send(:decode, 'NV', alphabet).must_equal [1]
+        hashids.send(:internal_decode, 'NV', alphabet).must_equal [1]
       end
     end
 

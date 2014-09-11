@@ -10,22 +10,22 @@ Use hashids when you do not want to expose your database ids to the user.
 
 ## What is it?
 
-hashids (Hash ID's) creates short, unique, decryptable hashes from unsigned integers.
+hashids (Hash ID's) creates short, unique, decodable hashes from unsigned integers.
 
 _(NOTE: This is **NOT** a true cryptographic hash, since it is reversible)_
 
-It was designed for websites to use in URL shortening, tracking stuff, or 
+It was designed for websites to use in URL shortening, tracking stuff, or
 making pages private (or at least unguessable).
 
 This algorithm tries to satisfy the following requirements:
 
-1. Hashes must be unique and decryptable.
+1. Hashes must be unique and decodable.
 2. They should be able to contain more than one integer (so you can use them in complex or clustered systems).
 3. You should be able to specify minimum hash length.
 4. Hashes should not contain basic English curse words (since they are meant to appear in public places - like the URL).
 
 Instead of showing items as `1`, `2`, or `3`, you could show them as `jR`, `k5`, and `l5`.
-You don't have to store these hashes in the database, but can encrypt + decrypt on the fly.
+You don't have to store these hashes in the database, but can encode + decode on the fly.
 
 All integers need to be greater than or equal to zero.
 
@@ -45,87 +45,87 @@ Or install it yourself as:
 
 ## Usage
 
-### Encrypting one number
+### Encoding one number
 
-You can pass a unique salt value so your hashes differ from everyone else's. 
+You can pass a unique salt value so your hashes differ from everyone else's.
 I use **this is my salt** as an example.
 
 ```ruby
 hashids = Hashids.new("this is my salt")
-hash = hashids.encrypt(12345)
+hash = hashids.encode(12345)
 ```
 
 `hash` is now going to be:
 
     NkK9
 
-### Decrypting
+### Decoding
 
-Notice during decryption, same salt value is used:
+Notice during decoding, same salt value is used:
 
 ```ruby
 hashids = Hashids.new("this is my salt")
-numbers = hashids.decrypt("NkK9")
+numbers = hashids.decode("NkK9")
 ```
 
 `numbers` is now going to be:
 
     [ 12345 ]
 
-### Decrypting with different salt
+### Decoding with different salt
 
-Decryption will not work if salt is changed:
+Decoding will not work if salt is changed:
 
 ```ruby
 hashids = Hashids.new("this is my pepper")
-numbers = hashids.decrypt("NkK9")
+numbers = hashids.decode("NkK9")
 ```
 
 `numbers` is now going to be:
 
     []
 
-### Encrypting several numbers
+### Encoding several numbers
 
 ```ruby
 hashids = Hashids.new("this is my salt")
-hash = hashids.encrypt(683, 94108, 123, 5)
+hash = hashids.encode(683, 94108, 123, 5)
 ```
 
 `hash` is now going to be:
 
     aBMswoO2UB3Sj
-  
-### Decrypting is done the same way
+
+### Decoding is done the same way
 
 ```ruby
 hashids = Hashids.new("this is my salt")
-numbers = hashids.decrypt("aBMswoO2UB3Sj")
+numbers = hashids.decode("aBMswoO2UB3Sj")
 ```
 
 `numbers` is now going to be:
 
     [ 683, 94108, 123, 5 ]
 
-### Encrypting and specifying minimum hash length
+### Encoding and specifying minimum hash length
 
-Here we encrypt integer 1, and set the minimum hash length to **8**
+Here we encode integer 1, and set the minimum hash length to **8**
 (by default it's **0** -- meaning hashes will be the shortest possible length).
 
 ```ruby
 hashids = Hashids.new("this is my salt", 8)
-hash = hashids.encrypt(1)
+hash = hashids.encode(1)
 ```
 
 `hash` is now going to be:
 
     gB0NV05e
 
-### Decrypting with minimum hash length
+### Decoding with minimum hash length
 
 ```ruby
 hashids = Hashids.new("this is my salt", 8)
-numbers = hashids.decrypt("gB0NV05e")
+numbers = hashids.decode("gB0NV05e")
 ```
 
 `numbers` is now going to be:
@@ -138,7 +138,7 @@ Here we set the alphabet to consist of: "abcdefghijkABCDEFGHIJK12345"
 
 ```ruby
 hashids = Hashids.new("this is my salt", 0, "abcdefghijkABCDEFGHIJK12345")
-hash = hashids.encrypt(1, 2, 3, 4, 5)
+hash = hashids.encode(1, 2, 3, 4, 5)
 ```
 
 `hash` is now going to be:
@@ -154,7 +154,7 @@ Having said that, this algorithm does try to make these hashes unguessable and u
 
 ```ruby
 hashids = Hashids.new("this is my salt")
-hash = hashids.encrypt(5, 5, 5, 5)
+hash = hashids.encode(5, 5, 5, 5)
 ```
 
 You don't see any repeating patterns that might show there's 4 identical numbers in the hash:
@@ -165,7 +165,7 @@ Same with incremented numbers:
 
 ```ruby
 hashids = Hashids.new("this is my salt")
-hash = hashids.encrypt(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+hash = hashids.encode(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 ```
 
 `hash` is now going to be:
@@ -177,29 +177,29 @@ hash = hashids.encrypt(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 ```ruby
 hashids = Hashids.new("this is my salt")
 
-hashids.encrypt 1 #=> NV
-hashids.encrypt 2 #=> 6m
-hashids.encrypt 3 #=> yD
-hashids.encrypt 4 #=> 2l
-hashids.encrypt 5 #=> rD
+hashids.encode 1 #=> NV
+hashids.encode 2 #=> 6m
+hashids.encode 3 #=> yD
+hashids.encode 4 #=> 2l
+hashids.encode 5 #=> rD
 ```
 
-### Encrypting using a HEX string
+### Encoding using a HEX string
 
 ```ruby
 hashids = Hashids.new("this is my salt")
-hash = hashids.encrypt_hex('DEADBEEF')
+hash = hashids.encode_hex('DEADBEEF')
 ```
 
 `hash` is now going to be:
 
     kRNrpKlJ
 
-### Decrypting to a HEX string
+### Decoding to a HEX string
 
 ```ruby
 hashids = Hashids.new("this is my salt")
-hex_str = hashids.decrypt_hex("kRNrpKlJ")
+hex_str = hashids.decode_hex("kRNrpKlJ")
 ```
 
 `hex_str` is now going to be:
@@ -207,6 +207,14 @@ hex_str = hashids.decrypt_hex("kRNrpKlJ")
     DEADBEEF
 
 ## Changelog
+
+**1.0.0**
+
+ - Public functions renamed to be more appropriate:
+  - `encrypt` changed to `encode`
+  - `encrypt_hex` changed to `encode_hex`
+  - `decrypt` changed to `decode`
+  - `decrypt_hex` changed to `decode_hex`
 
 **0.3.0**
 
@@ -224,7 +232,7 @@ hex_str = hashids.decrypt_hex("kRNrpKlJ")
  - Using scan over split where appropriate
 
 **0.0.1**
-  
+
 - First commit (Heavily based on the [CoffeeScript version](https://github.com/ivanakimov/hashids.coffee))
 
 ## Contact
