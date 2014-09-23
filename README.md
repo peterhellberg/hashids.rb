@@ -208,6 +208,11 @@ hex_str = hashids.decode_hex("kRNrpKlJ")
 
 ## Changelog
 
+**1.0.1**
+
+ - Final alphabet length can now be shorter than the minimum alphabet length
+  - `validate_alphabet` now run before setting up seps & guards
+
 **1.0.0**
 
  - Public functions renamed to be more appropriate:
