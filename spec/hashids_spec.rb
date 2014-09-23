@@ -63,6 +63,11 @@ describe Hashids do
       }.must_raise Hashids::AlphabetError
     end
 
+    it "has a final alphabet length that can be shorter than the minimum" do
+      Hashids.new("this is my salt", 0, 'cfhistuCFHISTU01').
+        alphabet.must_equal "10"
+    end
+
     it "checks the alphabet for spaces" do
       -> {
         Hashids.new("", 0, 'abc odefghijklmnopqrstuv')

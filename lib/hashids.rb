@@ -193,10 +193,10 @@ class Hashids
 
     @alphabet = uniq_characters(alphabet)
 
+    validate_alphabet
+
     setup_seps
     setup_guards
-
-    validate_alphabet
   end
 
   def setup_seps
