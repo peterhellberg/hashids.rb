@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 class Hashids
-  VERSION = "1.0.1"
+  VERSION = "1.0.2"
 
   MIN_ALPHABET_LENGTH = 16
   SEP_DIV             = 3.5
