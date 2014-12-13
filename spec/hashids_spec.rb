@@ -214,6 +214,10 @@ describe Hashids do
       h.decode("mxi8XH87").must_equal [25, 100, 950]
       h.decode("KQcmkIW8hX").must_equal [5,200,195, 1]
     end
+
+    it "handles invalid input by raising InputError" do
+      -> { hashids.decode('asdf-') }.must_raise Hashids::InputError
+    end
   end
 
   describe "decode_hex" do

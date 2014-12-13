@@ -180,6 +180,9 @@ class Hashids
 
     input.length.times do |i|
       pos = alphabet.index(input[i])
+
+      raise InputError, "unable to unhash" unless pos
+
       num += pos * alphabet.length ** (input.length - i - 1)
     end
 
@@ -249,6 +252,7 @@ class Hashids
   SaltError       = Class.new(ArgumentError)
   MinLengthError  = Class.new(ArgumentError)
   AlphabetError   = Class.new(ArgumentError)
+  InputError      = Class.new(ArgumentError)
 
   def validate_attributes
     unless salt.kind_of?(String)
