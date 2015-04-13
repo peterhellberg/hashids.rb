@@ -208,6 +208,10 @@ hex_str = hashids.decode_hex("kRNrpKlJ")
 
 ## Changelog
 
+**1.0.2**
+
+  - Handle invalid input by raising InputError
+
 **1.0.1**
 
  - Final alphabet length can now be shorter than the minimum alphabet length
