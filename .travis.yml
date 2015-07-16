@@ -1,8 +1,13 @@
 language: ruby
+
 bundler_args: --without documentation
+
 rvm:
   - 2.1.6
+  - 2.2.2
+  - 2.1.6
   - 2.0.0
-  - 1.9.3
-  - jruby-19mode # JRuby in 1.9 mode
-  - rbx-19mode
+  - jruby-1.7.20
+  - rbx-2.2.7
+
+sudo: false
