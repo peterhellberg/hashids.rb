@@ -114,14 +114,14 @@ class Hashids
   def internal_decode(hash, alphabet)
     ret = []
 
-    breakdown = hash.gsub(/[#{@guards}]/, " ")
+    breakdown = hash.tr(@guards, " ")
     array     = breakdown.split(" ")
 
     i = [3,2].include?(array.length) ? 1 : 0
 
     if breakdown = array[i]
       lottery   = breakdown[0]
-      breakdown = breakdown[1 .. -1].gsub(/[#{@seps}]/, " ")
+      breakdown = breakdown[1 .. -1].tr(@seps, " ")
       array     = breakdown.split(" ")
 
       array.length.times do |i|
