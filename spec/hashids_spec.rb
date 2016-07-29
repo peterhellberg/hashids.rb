@@ -114,6 +114,15 @@ describe Hashids do
     it "can encode a list of numbers passed in as an array" do
       hashids.encode([1,2,3]).must_equal "laHquq"
     end
+    
+    it "can encode  string encoded number" do
+      hashids.encode('1').must_equal "NV"
+      hashids.encode('-1').must_equal ""
+    end
+
+    it "raises exception if integer conversion fails" do
+      -> { hashids.encode('-') }.must_raise ArgumentError
+    end
 
     it "returns an empty string if no numbers" do
       hashids.encode.must_equal ""

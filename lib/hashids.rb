@@ -26,11 +26,11 @@ class Hashids
   def encode(*numbers)
     numbers.flatten! if numbers.length == 1
 
-    if numbers.empty? || numbers.reject { |n| Integer(n) && n >= 0 }.any?
-      ""
-    else
-      internal_encode(numbers)
-    end
+    numbers.map! { |n| Integer(n) } # raises if conversion fails
+
+    return '' if numbers.empty? || numbers.any? { |n| n < 0 }
+
+    internal_encode(numbers)
   end
 
   def encode_hex(str)
