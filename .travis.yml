@@ -3,10 +3,11 @@ language: ruby
 bundler_args: --without documentation
 
 rvm:
-  - 2.2.2
-  - 2.1.6
+  - 2.3.1
+  - 2.2.5
+  - 2.1.9
   - 2.0.0
+  - jruby-9.0.5.0
   - jruby-1.7.20
-  - rbx-2.2.7
 
 sudo: false
