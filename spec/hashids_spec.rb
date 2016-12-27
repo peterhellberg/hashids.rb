@@ -250,7 +250,7 @@ describe Hashids do
         must_raise Hashids::SaltError
     end
 
-    it "raises an ArgumentError unless the min_length is a Fixnum" do
+    it "raises an ArgumentError unless the min_length is a Integer" do
       -> { Hashids.new('salt', :not_a_fixnum)}.
         must_raise Hashids::MinLengthError
     end
