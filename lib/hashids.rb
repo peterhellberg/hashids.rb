@@ -124,8 +124,8 @@ class Hashids
       breakdown = breakdown[1 .. -1].tr(@seps, " ")
       array     = breakdown.split(" ")
 
-      array.length.times do |i|
-        sub_hash = array[i]
+      array.length.times do |time|
+        sub_hash = array[time]
         buffer   = lottery + salt + alphabet
         alphabet = consistent_shuffle(alphabet, buffer[0, alphabet.length])
 
@@ -259,8 +259,8 @@ class Hashids
       raise SaltError, "The salt must be a String"
     end
 
-    unless min_hash_length.kind_of?(Fixnum)
-      raise MinLengthError, "The min length must be a Fixnum"
+    unless min_hash_length.kind_of?(Integer)
+      raise MinLengthError, "The min length must be a Integer"
     end
 
     unless min_hash_length >= 0

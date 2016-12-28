@@ -114,7 +114,7 @@ describe Hashids do
     it "can encode a list of numbers passed in as an array" do
       hashids.encode([1,2,3]).must_equal "laHquq"
     end
-    
+
     it "can encode  string encoded number" do
       hashids.encode('1').must_equal "NV"
       hashids.encode('-1').must_equal ""
@@ -250,8 +250,8 @@ describe Hashids do
         must_raise Hashids::SaltError
     end
 
-    it "raises an ArgumentError unless the min_length is a Fixnum" do
-      -> { Hashids.new('salt', :not_a_fixnum)}.
+    it "raises an ArgumentError unless the min_length is an Integer" do
+      -> { Hashids.new('salt', :not_an_integer)}.
         must_raise Hashids::MinLengthError
     end
 
