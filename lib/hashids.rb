@@ -142,24 +142,21 @@ class Hashids
 
   def consistent_shuffle(alphabet, salt)
     return alphabet if salt.nil? || salt.empty?
-
     v = 0
     p = 0
-
+    chars = alphabet.chars
+    slen = salt.length
     (alphabet.length-1).downto(1) do |i|
-      v  = v % salt.length
+      v  = v % slen
       p += n = salt[v].ord
       j  = (n + v + p) % i
 
-      tmp_char = alphabet[j]
-
-      alphabet = alphabet[0, j] + alphabet[i] + alphabet[j + 1..-1]
-      alphabet = alphabet[0, i] + tmp_char    + alphabet[i + 1..-1]
+      chars[i], chars[j] = chars[j], chars[i]
 
       v += 1
     end
 
-    alphabet
+    chars.join
   end
 
   def hash(input, alphabet)
