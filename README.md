@@ -208,6 +208,10 @@ hex_str = hashids.decode_hex("kRNrpKlJ")
 
 ## Changelog
 
+**1.0.4**
+
+ - Improved encode/decode performance
+
 **1.0.3**
 
  - Support for Ruby 2.4.0
