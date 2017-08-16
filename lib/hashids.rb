@@ -144,7 +144,7 @@ class Hashids
     return alphabet if salt.nil? || salt.empty?
     v = 0
     p = 0
-    chars = alphabet.chars
+    chars = alphabet.chars.to_a
     slen = salt.length
     (alphabet.length-1).downto(1) do |i|
       v  = v % slen
