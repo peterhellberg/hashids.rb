@@ -144,7 +144,7 @@ class Hashids
     return alphabet if salt.nil? || salt.empty?
 
     chars = alphabet.each_char.to_a
-    salt_ords = salt.codepoints
+    salt_ords = salt.codepoints.to_a
     idx = ord_total = 0
 
     (alphabet.length-1).downto(1) do |i|
