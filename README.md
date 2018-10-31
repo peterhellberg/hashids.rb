@@ -6,7 +6,7 @@ Use hashids when you do not want to expose your database ids to the user.
 [http://hashids.org/ruby/](http://hashids.org/ruby/)
 
 [![Build Status](https://travis-ci.org/peterhellberg/hashids.rb.svg?branch=master)](http://travis-ci.org/peterhellberg/hashids.rb)
-(2.4.0 2.3.1, 2.2.5, 2.1.9, 2.0.0, jruby-9.0.5.0, jruby-1.7.20)
+(2.5.1, 2.4.5, 2.3.8, 2.2.10, 2.1.10, 2.0.0, jruby-9.1.17.0, jruby-1.7.27)
 
 ## What is it?
 
