@@ -145,6 +145,7 @@ class Hashids
 
     chars = alphabet.each_char.to_a
     salt_ords = salt.codepoints.to_a
+    salt_length = salt_ords.length
     idx = ord_total = 0
 
     (alphabet.length-1).downto(1) do |i|
@@ -153,7 +154,7 @@ class Hashids
 
       chars[i], chars[j] = chars[j], chars[i]
 
-      idx = (idx + 1) % salt_ords.length
+      idx = (idx + 1) % salt_length
     end
 
     chars.join
