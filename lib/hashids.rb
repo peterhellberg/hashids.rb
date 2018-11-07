@@ -142,18 +142,19 @@ class Hashids
 
   def consistent_shuffle(alphabet, salt)
     return alphabet if salt.nil? || salt.empty?
-    v = 0
-    p = 0
-    chars = alphabet.chars.to_a
-    slen = salt.length
+
+    chars = alphabet.each_char.to_a
+    salt_ords = salt.codepoints.to_a
+    salt_length = salt_ords.length
+    idx = ord_total = 0
+
     (alphabet.length-1).downto(1) do |i|
-      v  = v % slen
-      p += n = salt[v].ord
-      j  = (n + v + p) % i
+      ord_total += n = salt_ords[idx]
+      j = (n + idx + ord_total) % i
 
       chars[i], chars[j] = chars[j], chars[i]
 
-      v += 1
+      idx = (idx + 1) % salt_length
     end
 
     chars.join
