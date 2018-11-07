@@ -208,6 +208,11 @@ hex_str = hashids.decode_hex("kRNrpKlJ")
 
 ## Changelog
 
+**1.0.5**
+
+ - Improve shuffle performance
+ - Update rubies used by Travis-CI
+
 **1.0.4**
 
  - Improved encode/decode performance
