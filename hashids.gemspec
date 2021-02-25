@@ -11,6 +11,7 @@ Gem::Specification.new do |gem|
   gem.summary       = %q{Generate YouTube-like hashes from one or many numbers.}
   gem.description   = %q{Use hashids when you do not want to expose your database ids to the user.}
   gem.homepage      = "https://github.com/peterhellberg/hashids.rb"
+  gem.license       = "MIT"
 
   gem.required_ruby_version = '>= 1.9.3'
 
