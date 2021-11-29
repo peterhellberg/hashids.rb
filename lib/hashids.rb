@@ -192,7 +192,7 @@ class Hashids
   def setup_alphabet
     validate_attributes
 
-    @alphabet = uniq_characters(alphabet)
+    @alphabet = String.new(uniq_characters(alphabet))
 
     validate_alphabet
 
@@ -201,7 +201,7 @@ class Hashids
   end
 
   def setup_seps
-    @seps = DEFAULT_SEPS
+    @seps = String.new(DEFAULT_SEPS)
 
     seps.length.times do |i|
       # Seps should only contain characters present in alphabet,
