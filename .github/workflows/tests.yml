@@ -10,13 +10,20 @@ jobs:
     env:
       RUBYOPT: "--enable=frozen-string-literal"
 
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu]
+        ruby: [2.6, 2.7, 3.0, jruby, jruby-head, truffleruby, truffleruby-head]
+    continue-on-error: ${{ endsWith(matrix.ruby, 'head') || matrix.ruby == 'debug' }}
+
     steps:
       - uses: actions/checkout@v2
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.0
+          ruby-version: ${{ matrix.ruby }}
           bundler-cache: true # Runs also bundle install
 
       - name: Run tests
