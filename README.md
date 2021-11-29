@@ -5,8 +5,7 @@ Use hashids when you do not want to expose your database ids to the user.
 
 [http://hashids.org/ruby/](http://hashids.org/ruby/)
 
-[![Build Status](https://travis-ci.org/peterhellberg/hashids.rb.svg?branch=master)](http://travis-ci.org/peterhellberg/hashids.rb)
-(2.6.2, 2.5.5, 2.4.5, 2.3.8, jruby-9.2.6.0)
+[![Build Status (push)](https://github.com/peterhellberg/hashids.rb/actions/workflows/tests.yml/badge.svg?event=push)](https://github.com/peterhellberg/hashids.rb/actions/workflows/tests.yml)
 
 ## What is it?
 
@@ -207,6 +206,12 @@ hex_str = hashids.decode_hex("kRNrpKlJ")
     DEADBEEF
 
 ## Changelog
+
+**1.0.6**
+
+ - Fixed using lib with frozen strings
+ - Remove deprecated global use of `must_equal` and `must_raise`
+ - Use GitHub Actions instead of Travis-CI
 
 **1.0.5**
 
