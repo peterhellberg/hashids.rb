@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> Hashids has been rebranded to 🦑 [Sqids](https://sqids.org/), and there is a [Ruby implementation](https://github.com/sqids/sqids-ruby) of it that I suggest you use instead of Hashids.rb
+
 # Hashids
 
 A small Ruby gem to generate YouTube-like ids from one or many numbers.
